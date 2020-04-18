@@ -22,7 +22,7 @@ function setup() {
 	speed = 2;
 	paused = false;
 	generation = 0;
-	seed = 123;
+	seed = Date.now();
     
 	createCanvas(scale, scale);
 	frameRate(1);

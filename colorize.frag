@@ -19,17 +19,19 @@ vec2 unsmooth (vec2 val) {
 void main(void)
 {
 	vec4 me;
-  vec2 texCoord = vTexCoord;
-  texCoord.y = 1.0 - texCoord.y;
+  vec2 coord = vTexCoord;
+  coord.y = 1.0 - coord.y;
   vec2 mouse = mousepos*scale;
   //mouse.x = 1.0 - mouse.x;
 	
 	
 	//zoom window
-	vec2 coord = texCoord;
-	if(mousepressed && coord.x < scale*120. && coord.y < scale*120.){
+	if(mousepressed){
 		//me = vec4(texture(tex0, vec2(mousepos.x+((coord.x+.05)/10.)-.1, mousepos.y-((coord.y+.05)/-10.)-.1))); 
-		me = vec4(texture( tex0, unsmooth(mouse+(coord-scale*60.)/4.) )); 
+		float zoomAmount = 4.;
+		vec2 offset = (zoomAmount-1.0)*-clamp(mouse, 0.,1.);
+		vec2 sampleCoord = unsmooth(coord-offset)/zoomAmount;
+		me = vec4(texture( tex0, sampleCoord)); 
 	} else {
 		me = vec4(texture(tex0, coord));
 	}
